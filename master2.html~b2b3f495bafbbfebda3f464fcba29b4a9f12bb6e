@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script type="text/javascript">
+        var window_width= $(window).width();
+        var window_height=$(window).height();
+        var mario_x;
+        var mario_math;
+        $(function(){
+          mario_x =Number( $(`#mario`).css(`left`).replace(`px`,``));
+          kinoko_x =Number( $(`.kinoko`).css(`left`).replace(`px`,``));
+           console.log(mario_x);
+          var kinoko_left =Number( $(`.kinoko`).css(`left`).replace(`px`,``));
+              window.onkeydown = function(event){
+                 console.log(event);
+                  if( event.keyCode == 37 && 0 <= mario_x ){
+                  mario_x -=30;
+                }
+                if( event.keyCode == 39  && (mario_x+100) <= window_width ){
+                 mario_x +=30;
+                }
+              $(`#mario`).css(`left`, mario_x + `px`);
+              }
+              setInterval(kinoko_clone_random,2000);
+              setInterval(kinoko_down,500);
+        });
+        var kinoko_clone_random = function(){
+            $kinoko_clone = $(`.kinoko_base`).clone().removeClass(`kinoko_base`).appendTo(`body`);
+            var kinoko_random = Math.floor(Math.random()*(window_width));
+            var kinoko_position = $kinoko_clone.css(`left`,kinoko_random + `px`);
+        }
+            var kinoko_down = function(){
+              $(`.kinoko`).each(function(index,value){
+                if(index > 0){
+                  var top = value.style.top;
+                  top = Number(top.replace(`px`,``));
+                  top +=50;
+                  value.style.top = top + `px`;
+                }
+                var left = value.style.left;
+                left = Number(left.replace('px',''));
+
+                if( 120 >= (window_height - top) && (mario_x <= left && left <= (mario_x+100)) ){
+                  value.remove();
+                }
+                else{
+                  if(window_height <= (top -50)){
+                    value.remove();
+                  }
+                };
+              });
+            };
+      </script>
